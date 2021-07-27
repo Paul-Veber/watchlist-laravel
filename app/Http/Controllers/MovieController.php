@@ -16,7 +16,7 @@ class MovieController extends Controller
     {
         $movies = Movie::latest()->paginate(5);
 
-        return view('movies.index', compact('movies'))
+        return view('Movies.Index', compact('movies'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -27,7 +27,7 @@ class MovieController extends Controller
      */
     public function create()
     {
-        return view('product.create');
+        return view('Movies.Creates');
     }
 
     /**
@@ -39,12 +39,13 @@ class MovieController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'=> 'required'
+            'name' => 'required',
+            'realisator' => 'required' 
         ]);
 
         Movie::create($request->all());
 
-        return redirect()->route('movies.index')
+        return redirect()->route('Movies.Index')
             ->with('success', 'Movie created with success');
     }
 
@@ -56,7 +57,7 @@ class MovieController extends Controller
      */
     public function show(Movie $movie)
     {
-        return view('movies.show', compact('movie'));
+        return view('Movies.Show', compact('movie'));
     }
 
     /**
@@ -67,7 +68,7 @@ class MovieController extends Controller
      */
     public function edit(Movie $movie)
     {
-        return view('movie.edit', compact('movie'));
+        return view('Movies.Edit', compact('movie'));
     }
 
     /**
@@ -80,8 +81,13 @@ class MovieController extends Controller
     public function update(Request $request, Movie $movie)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
+            'realisator' => 'required'
         ]);
+        $movie->update($request->all());
+
+        return redirect()->route('movies.index')
+            ->with('success', 'movie updated successfully');
     }
 
     /**
@@ -94,7 +100,7 @@ class MovieController extends Controller
     {
         $movie->delete();
 
-        return redirect()->route('movie.index')
+        return redirect()->route('Movie.Index')
             ->with('sucess', 'Movie deleted with success');
     }
 }

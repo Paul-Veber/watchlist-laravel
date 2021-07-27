@@ -19,7 +19,7 @@ class CreateMoviesTable extends Migration
             $table->timestamp('updated_at')->nullable();
             $table->string('name', 255);
             $table->string('description', 500)->nullable();
-            $table->string('realisator', 255);
+            $table->string('realisator', 255)->default('');
             $table->integer('release_year')->nullable();
         });
     }
